@@ -1,0 +1,71 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ComplaintDAO {
+    private static final String URL = "jdbc:mysql://localhost:3306/your_database";
+    private static final String USER = "your_username";
+    private static final String PASSWORD = "your_password";
+
+    public List<String> getComplaintsByUser(String username) {
+        List<String> complaints = new ArrayList<>();
+        String query = "SELECT complaint_text FROM complaints WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                complaints.add(rs.getString("complaint_text"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return complaints;
+    }
+}
+
+```java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ComplaintDAO {
+    private static final String URL = "jdbc:mysql://localhost:3306/your_database";
+    private static final String USER = "your_username";
+    private static final String PASSWORD = "your_password";
+
+    public List<String> getComplaintsByUser(String username) {
+        List<String> complaints = new ArrayList<>();
+        String query = "SELECT complaint_text FROM complaints WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                complaints.add(rs.getString("complaint_text"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return complaints;
+    }
+}
+
+// In your GUI class where you want to display complaints:
+// ComplaintDAO complaintDAO = new ComplaintDAO();
+// List<String> complaints = complaintDAO.getComplaintsByUser("user123");
+
+// for (String complaint : complaints) {
+    // Add complaint to your GUI component (e.g., JTextArea, JList, etc.)
+    // Example: textArea.append(complaint + "\n");
+// }
