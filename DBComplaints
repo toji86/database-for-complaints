@@ -1,0 +1,29 @@
+import java.sql.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+public class DBComplaint {
+    private Connection conn;
+
+    public DBComplaint(Connection conn) {
+        this.conn = conn;
+    }
+
+    public void fetchComplaints(JTable complaintsTable) {
+        String query = "SELECT * FROM complaints";
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            DefaultTableModel model = (DefaultTableModel) complaintsTable.getModel();
+            model.setRowCount(0);  // Clear existing rows
+
+            while (rs.next()) {
+                int complaintId = rs.getInt("complaint_id");
+                String user = rs.getString("user");
+                String complaint = rs.getString("complaint");
+                String status = rs.getString("status");
+                model.addRow(new Object[]{complaintId, user, complaint, status});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
