@@ -13,7 +13,7 @@ public class DBComplaint {
         String query = "SELECT * FROM complaints";
         try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             DefaultTableModel model = (DefaultTableModel) complaintsTable.getModel();
-            model.setRowCount(0);  // Clear existing rows
+            model.setRowCount(0);  
 
             while (rs.next()) {
                 int complaintId = rs.getInt("complaint_id");
